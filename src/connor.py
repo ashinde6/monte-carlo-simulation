@@ -20,7 +20,7 @@ NOT_AVAILABLE_BOUND = BUSY_BOUND + 0.3
 x = SEED
 
 # Desired simulation sample size
-N = 1000
+N = 3
 
 def generateW():
     w = 0
@@ -28,6 +28,7 @@ def generateW():
     done = False
     while not done or completedAttempts < 4:
         w += INITIATE_CALL_TIME
+        global x
         x = getRandNum(x)
         randCase = toDecimal(x)
         if randCase < BUSY_BOUND:
@@ -53,7 +54,7 @@ def getRandNum(previous_random_number):
 
 def toDecimal(random_number):
     # TODO: add a check for output is between 0 and 1
-    return random_number / MODULUS
+    return round(random_number / MODULUS, 4)
 
 def inverseCDF(u):
     output = 0
@@ -61,11 +62,14 @@ def inverseCDF(u):
         output = -12 * math.log(1-u)
     return output
 
-
 def main():
     output = []
     for i in range(N):
-        output.append(generateW())
+        # output.append(generateW())
+        global x
+        x = getRandNum(x)
+        randCase = toDecimal(x)
+        output.append(randCase)
     print(output)
 
 if __name__ == "__main__":
