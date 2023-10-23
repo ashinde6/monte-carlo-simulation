@@ -21,13 +21,13 @@ NOT_AVAILABLE_BOUND = BUSY_BOUND + 0.3
 x = SEED
 
 # Desired simulation sample size
-N = 1000
+N = 3
 
 def generateW():
     w = 0  # w is the total time spent calling
     completedAttempts = 0
     done = False
-    while not done or completedAttempts < 4:
+    while not done and completedAttempts < 4:
         w += INITIATE_CALL_TIME
         global x
         x = getRandNum(x)
@@ -42,7 +42,7 @@ def generateW():
             x = getRandNum(x)
             u = toDecimal(x)
             timeToAnswer = inverseCDF(u)
-            if x < 25:
+            if timeToAnswer < 25:
                 w += timeToAnswer + END_CALL_TIME
                 done = True
             else:
@@ -55,22 +55,23 @@ def getRandNum(previous_random_number):
 
 def toDecimal(random_number):
     decimal = round(random_number / MODULUS, 4)
-    if decimal >= 1: 
-        raise Exception("Decimal representation of the given random number %d is greater than 1", decimal)
-    elif decimal < 0:
-        raise Exception("Decimal representation of the given random number %d is less than 0", decimal)
+    # if decimal >= 1: 
+    #     raise Exception("Decimal representation of the given random number %f is greater than or equal to 1", decimal)
+    # elif decimal < 0:
+    #     raise Exception("Decimal representation of the given random number %f is less than 0", decimal)
     return round(random_number / MODULUS, 4)
 
 def inverseCDF(u):
     output = 0
     if u >= 0 and u < 1:
-        output = -12 * math.log(1-u)
+        output = -12 * np.log(1-u)
     return output
 
 def generateSample():
     output = []
     for i in range(N):
-        output.append(generateW())
+        w = generateW()
+        output.append(w)
     return output
 
 
