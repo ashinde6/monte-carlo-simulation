@@ -20,7 +20,7 @@ NOT_AVAILABLE_BOUND = BUSY_BOUND + 0.3
 x = SEED
 
 # Desired simulation sample size
-N = 3
+N = 1000
 
 def generateW():
     w = 0
@@ -54,6 +54,11 @@ def getRandNum(previous_random_number):
 
 def toDecimal(random_number):
     # TODO: add a check for output is between 0 and 1
+    decimal = round(random_number / MODULUS, 4)
+    if decimal >= 1: 
+        raise Exception("Decimal representation of the given random number %d is greater than 1", decimal)
+    elif decimal < 0:
+        raise Exception("Decimal representation of the given random number %d is less than 0", decimal)
     return round(random_number / MODULUS, 4)
 
 def inverseCDF(u):
