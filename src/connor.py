@@ -1,6 +1,8 @@
+import math
+
 # Call Action Times
 INITIATE_CALL_TIME = 6
-BUSY_LINE_TIME = 3
+BUSY_TIME = 3
 NOT_AVAILABLE_TIME = 25
 END_CALL_TIME = 1
 
@@ -35,7 +37,7 @@ def generateW():
         x = getRandNum(x)
         randCase = toDecimal(x)
         if randCase < BUSY_BOUND:
-            w += BUSY_LINE_TIME + END_CALL_TIME
+            w += BUSY_TIME + END_CALL_TIME
             completedAttempts += 1
         elif randCase < NOT_AVAILABLE_BOUND:
             w += NOT_AVAILABLE_TIME + END_CALL_TIME
@@ -58,6 +60,14 @@ def getRandNum(previous_random_number):
 def toDecimal(random_number):
     # TODO: add a check for output is between 0 and 1
     return random_number / MODULUS
+
+def inverseCDF(u):
+    output = 0
+    if u >= 0 and u < 1:
+        output = -12 * math.log(1-u)
+    return output
+        
+
 
 
 
