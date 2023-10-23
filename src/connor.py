@@ -17,6 +17,15 @@ NOT_AVAILABLE_BOUND = BUSY_BOUND + 0.3
 # Global Tracker for Previous x (randomly generated number)
 x = SEED
 
+# Desired simulation sample size
+N = 1000
+
+def main():
+    output = []
+    for i in range(N):
+        output.append(generateW())
+    return output
+
 def generateW():
     w = 0
     completedAttempts = 0
@@ -43,6 +52,12 @@ def generateW():
                 completedAttempts += 1
     return w
 
+def getRandNum(previous_random_number):
+    return (previous_random_number * MULTIPLIER + INCREMENT) % MODULUS
+
+def toDecimal(random_number):
+    # TODO: add a check for output is between 0 and 1
+    return random_number / MODULUS
 
 
 
