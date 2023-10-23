@@ -22,12 +22,6 @@ x = SEED
 # Desired simulation sample size
 N = 1000
 
-def main():
-    output = []
-    for i in range(N):
-        output.append(generateW())
-    return output
-
 def generateW():
     w = 0
     completedAttempts = 0
@@ -66,6 +60,16 @@ def inverseCDF(u):
     if u >= 0 and u < 1:
         output = -12 * math.log(1-u)
     return output
+
+
+def main():
+    output = []
+    for i in range(N):
+        output.append(generateW())
+    print(output)
+
+if __name__ == "__main__":
+    main()
         
 
 
