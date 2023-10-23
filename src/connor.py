@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 # Call Action Times
 INITIATE_CALL_TIME = 6
@@ -53,7 +54,6 @@ def getRandNum(previous_random_number):
     return (previous_random_number * MULTIPLIER + INCREMENT) % MODULUS
 
 def toDecimal(random_number):
-    # TODO: add a check for output is between 0 and 1
     decimal = round(random_number / MODULUS, 4)
     if decimal >= 1: 
         raise Exception("Decimal representation of the given random number %d is greater than 1", decimal)
@@ -67,15 +67,20 @@ def inverseCDF(u):
         output = -12 * math.log(1-u)
     return output
 
-def main():
+def generateSample():
     output = []
     for i in range(N):
-        # output.append(generateW())
-        global x
-        x = getRandNum(x)
-        randCase = toDecimal(x)
-        output.append(randCase)
-    print(output)
+        output.append(generateW())
+    return output
+
+
+def generateEstimates(sample):
+    print(np.mean(sample))
+
+def main():
+    sample = generateSample()
+    generateEstimates(sample)
+
 
 if __name__ == "__main__":
     main()
