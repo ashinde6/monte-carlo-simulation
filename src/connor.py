@@ -23,7 +23,7 @@ x = SEED
 N = 1000
 
 def generateW():
-    w = 0
+    w = 0  # w is the total time spent calling
     completedAttempts = 0
     done = False
     while not done or completedAttempts < 4:
