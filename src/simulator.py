@@ -74,18 +74,17 @@ def generateSample():
     return output
 
 
-def generateAndPrintEstimates(sample):
+def generateEstimates(sample):
     
     # Sample Distribution Basics
+    estimates = {}
     sortedSample = sorted(sample)
-    mean = np.mean(sortedSample)
-    quartile1 = sortedSample[249]
-    quartile2 = sortedSample[499]
-    quartile3 = sortedSample[749]
-    print(f'''Mean: {mean}\n1st Quartile: {quartile1}\nMedian: {quartile2}\n3rd Quartile: {quartile3}''')
+    estimates["mean"] = np.mean(sortedSample)
+    estimates["quartile1"] = sortedSample[249]
+    estimates["quartile2"] = sortedSample[499]
+    estimates["quartile3"] = sortedSample[749]
 
     # Probabilities of events P[W <= eventCutoff]
-    # TODO: Tail indicators TBD
     w5 = 60
     w6 = 70
     w7 = 80
@@ -95,13 +94,20 @@ def generateAndPrintEstimates(sample):
         # calculate
         frequency = np.sum(numbers_array <= cutoff)
         probability = frequency / 1000
-        # print
-        print(f"P[W<{cutoff}] = {probability}")
+        estimates[f"P[W<{cutoff}]"] = probability
+
+    return estimates
+
+
+def printDict(dict):
+    for key in dict:
+        print(f"{key}: {dict[key]}")
 
 
 def main():
     sample = generateSample()
-    generateAndPrintEstimates(sample)
+    printDict(generateEstimates(sample))
+    return
 
 
 if __name__ == "__main__":
