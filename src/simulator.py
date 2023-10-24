@@ -74,26 +74,34 @@ def generateSample():
     return output
 
 
-def generateEstimates(sample):
-    # Distribution Basics
-    print("Mean: " + str(np.mean(sample)))
-    print("1st quartile: " + str(sample[249]))
-    print("Median: " + str(sample[499]))
-    print("3rd quartile: " + str(sample[749]))
-    # Probabilities of events
-    # W<=15
-    # W<=20
-    # W<=30
-    # W<=40
-    # Tail indicators
-    # W<=w5
-    # W<=w6
-    # W<=w7
-    return
+def generateAndPrintEstimates(sample):
+    
+    # Sample Distribution Basics
+    sortedSample = sorted(sample)
+    mean = np.mean(sortedSample)
+    quartile1 = sortedSample[249]
+    quartile2 = sortedSample[499]
+    quartile3 = sortedSample[749]
+    print(f'''Mean: {mean}\n1st Quartile: {quartile1}\nMedian: {quartile2}\n3rd Quartile: {quartile3}''')
+
+    # Probabilities of events P[W <= eventCutoff]
+    # TODO: Tail indicators TBD
+    w5 = 60
+    w6 = 70
+    w7 = 80
+    eventCutoffs= [ 15, 20, 30, 40, w5, w6, w7 ] # set cutoffs
+    numbers_array = np.array(sortedSample)  # prep array
+    for cutoff in eventCutoffs: 
+        # calculate
+        frequency = np.sum(numbers_array <= cutoff)
+        probability = frequency / 1000
+        # print
+        print(f"P[W<{cutoff}] = {probability}")
+
 
 def main():
     sample = generateSample()
-    generateEstimates(sample)
+    generateAndPrintEstimates(sample)
 
 
 if __name__ == "__main__":
