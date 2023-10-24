@@ -22,6 +22,7 @@ x = SEED
 # Desired simulation sample size
 N = 1000
 
+
 def generateW():
     w = 0  # w is the total time spent calling
     completedAttempts = 0
@@ -49,22 +50,26 @@ def generateW():
                 completedAttempts += 1
     return w
 
+
 def getRandNum(previous_random_number):
     return (previous_random_number * MULTIPLIER + INCREMENT) % MODULUS
 
+
 def toDecimal(random_number):
     decimal = round(random_number / MODULUS, 4)
-    # if decimal >= 1: 
+    # if decimal >= 1:
     #     raise Exception("Decimal representation of the given random number %f is greater than or equal to 1", decimal)
     # elif decimal < 0:
     #     raise Exception("Decimal representation of the given random number %f is less than 0", decimal)
     return round(random_number / MODULUS, 4)
+
 
 def inverseCDF(u):
     output = 0
     if u >= 0 and u < 1:
         output = -12 * np.log(1-u)
     return output
+
 
 def generateSample():
     output = []
@@ -75,7 +80,7 @@ def generateSample():
 
 
 def generateEstimates(sample):
-    
+
     # Sample Distribution Basics
     estimates = {}
     sortedSample = sorted(sample)
@@ -88,9 +93,9 @@ def generateEstimates(sample):
     w5 = 60
     w6 = 70
     w7 = 80
-    eventCutoffs= [ 15, 20, 30, 40, w5, w6, w7 ] # set cutoffs
+    eventCutoffs = [15, 20, 30, 40, w5, w6, w7]  # set cutoffs
     numbers_array = np.array(sortedSample)  # prep array
-    for cutoff in eventCutoffs: 
+    for cutoff in eventCutoffs:
         # calculate
         frequency = np.sum(numbers_array <= cutoff)
         probability = frequency / 1000
@@ -112,10 +117,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-        
-
-
-
-
-
-
