@@ -20,7 +20,7 @@ NOT_AVAILABLE_BOUND = BUSY_BOUND + 0.3
 x = SEED
 
 # Desired simulation sample size
-N = 3
+N = 1000
 
 def generateW():
     w = 0  # w is the total time spent calling
@@ -75,7 +75,21 @@ def generateSample():
 
 
 def generateEstimates(sample):
-    print(np.mean(sample))
+    # Distribution Basics
+    print("Mean: " + str(np.mean(sample)))
+    print("1st quartile: " + str(sample[249]))
+    print("Median: " + str(sample[499]))
+    print("3rd quartile: " + str(sample[749]))
+    # Probabilities of events
+    # W<=15
+    # W<=20
+    # W<=30
+    # W<=40
+    # Tail indicators
+    # W<=w5
+    # W<=w6
+    # W<=w7
+    return
 
 def main():
     sample = generateSample()
