@@ -110,10 +110,8 @@ def printDict(dict):
         print(f"{key}: {dict[key]}")
 
 def generateGraph(sample):
-    x = list(range(1, N+1))
-    y = sample
-
-    plt.scatter(x,y,)
+    w = np.array(sample)
+    plt.hist(w)
     plt.show()
 
     box_plot_data = [sample]
