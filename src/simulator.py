@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Call Action Times
 INITIATE_CALL_TIME = 6
@@ -108,10 +109,22 @@ def printDict(dict):
     for key in dict:
         print(f"{key}: {dict[key]}")
 
+def generateGraph(sample):
+    x = list(range(1, N+1))
+    y = sample
+
+    plt.scatter(x,y,)
+    plt.show()
+
+    box_plot_data = [sample]
+    plt.boxplot(box_plot_data, patch_artist=True)
+    plt.show()
+
 
 def main():
     sample = generateSample()
     printDict(generateEstimates(sample))
+    generateGraph(sample)
     return
 
 
