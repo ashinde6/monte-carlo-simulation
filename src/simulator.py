@@ -109,14 +109,45 @@ def printDict(dict):
     for key in dict:
         print(f"{key}: {dict[key]}")
 
+
 def generateGraph(sample):
+    histogram(sample)
+    boxPlot(sample)
+    CDF(sample)
+    return
+
+def histogram(sample):
+    plt.figure()  # Create a new figure
     w = np.array(sample)
     plt.hist(w)
-    plt.show()
+    plt.show(block=False)
 
+    return
+
+def boxPlot(sample):
+    plt.figure()  # Create a new figure
     box_plot_data = [sample]
     plt.boxplot(box_plot_data, patch_artist=True)
+    plt.show(block=False)
+
+    return
+
+def CDF(sample):
+    plt.figure()  # Create a new figure
+     # Step 1: Sort the data
+    x = np.sort(sample)
+    
+    # Step 2: Calculate the cumulative frequency
+    n = x.size
+    y = np.arange(1, n+1) / n  # This gives the fraction or percent of data points below each value in x
+
+    # Step 3: Plot the sorted values against their corresponding cumulative frequencies
+    plt.plot(x, y, marker='.', linestyle='none')
+    plt.grid(True)
     plt.show()
+
+    return
+
 
 
 def main():
