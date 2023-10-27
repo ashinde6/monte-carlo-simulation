@@ -20,15 +20,11 @@ NOT_AVAILABLE_BOUND = BUSY_BOUND + 0.3
 # Global Tracker for Previous x (randomly generated number)
 x = SEED
 
-# Desired simulation sample size
-N = 1000
-
-
 def generateW():
     w = 0  # w is the total time spent calling
     completedAttempts = 0
-    done = False
-    while not done and completedAttempts < 4:
+    callAnswered = False
+    while not callAnswered and completedAttempts < 4:
         w += INITIATE_CALL_TIME
         global x
         x = getRandNum(x)
@@ -45,7 +41,7 @@ def generateW():
             timeToAnswer = inverseCDF(u)
             if timeToAnswer < 25:
                 w += timeToAnswer + END_CALL_TIME
-                done = True
+                callAnswered = True
             else:
                 w += 25 + END_CALL_TIME
                 completedAttempts += 1
@@ -72,9 +68,9 @@ def inverseCDF(u):
     return output
 
 
-def generateSample():
+def generateSample(n):
     output = []
-    for i in range(N):
+    for i in range(n):
         w = generateW()
         output.append(w)
     return output
@@ -85,22 +81,28 @@ def generateEstimates(sample):
     # Sample Distribution Basics
     estimates = {}
     sortedSample = sorted(sample)
-    estimates["mean"] = np.mean(sortedSample)
-    estimates["quartile1"] = sortedSample[249]
-    estimates["quartile2"] = sortedSample[499]
-    estimates["quartile3"] = sortedSample[749]
+    estimates["mean"] = round(np.mean(sortedSample), 2)
+    estimates["quartile1"] = round(sortedSample[249], 2)
+    estimates["median"] = round(sortedSample[499], 2)
+    estimates["quartile3"] = round(sortedSample[749], 2)
 
     # Probabilities of events P[W <= eventCutoff]
-    w5 = 60
-    w6 = 70
-    w7 = 80
-    eventCutoffs = [15, 20, 30, 40, w5, w6, w7]  # set cutoffs
-    numbers_array = np.array(sortedSample)  # prep array
-    for cutoff in eventCutoffs:
-        # calculate
-        frequency = np.sum(numbers_array <= cutoff)
+    cutoffsOnetoThree = [15, 20, 30]  # set cutoffs
+    for cutoff in cutoffsOnetoThree:
+        frequency = len([x for x in sample if x <=cutoff])
         probability = frequency / 1000
-        estimates[f"P[W<{cutoff}]"] = probability
+        estimates[f"P[W<={cutoff}]"] = probability
+    
+    # Probabilities of events P[W <= eventCutoff]
+    w5 = 50
+    w6 = 60
+    w7 = 65
+    cutoffsFourtoSeven = [40, w5, w6, w7]
+    for cutoff in cutoffsFourtoSeven:
+        frequency = len([x for x in sample if x >cutoff])
+        probability = frequency / 1000
+        estimates[f"P[W>{cutoff}]"] = probability
+    
 
     return estimates
 
@@ -142,7 +144,12 @@ def CDF(sample):
     y = np.arange(1, n+1) / n  # This gives the fraction or percent of data points below each value in x
 
     # Step 3: Plot the sorted values against their corresponding cumulative frequencies
-    plt.plot(x, y, marker='.', linestyle='none')
+    plt.plot(x, y, linewidth=2)
+
+    # Manually created, rough-estimate line of best-fit
+    x_func = np.linspace(7, 130, 500)
+    y_func = 1- np.e**(-0.0275*(x_func - 7))
+    plt.plot(x_func, y_func, color='red', linewidth=2)
     plt.grid(True)
     plt.show()
 
@@ -151,7 +158,8 @@ def CDF(sample):
 
 
 def main():
-    sample = generateSample()
+    sample = generateSample(1000)
+    print(sample[0:9])  # check first 10 entries just in case!
     printDict(generateEstimates(sample))
     generateGraph(sample)
     return
