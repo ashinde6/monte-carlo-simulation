@@ -122,6 +122,11 @@ def histogram(sample):
     plt.figure()  # Create a new figure
     w = np.array(sample)
     plt.hist(w)
+
+    plt.ylabel("Frequency")
+    plt.xlabel("Time (seconds)")
+    plt.title("Time spent calling one customer")
+
     plt.show(block=False)
 
     return
@@ -145,7 +150,7 @@ def CDF(sample):
     plt.grid(True)
 
     # Graph titles
-    plt.xlabel("Time spent calling one customer")
+    plt.xlabel("Time spent calling one customer (seconds)")
     plt.ylabel("Cumulative Probability")
     plt.title("Cumulative Distribution Function of Time Spent Calling One Customer")
 
