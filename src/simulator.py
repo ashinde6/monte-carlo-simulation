@@ -30,21 +30,22 @@ def generateW():
         x = getRandNum(x)
         randCase = toDecimal(x)
         if randCase < BUSY_BOUND:
-            w += BUSY_TIME + END_CALL_TIME
+            w += BUSY_TIME
             completedAttempts += 1
         elif randCase < NOT_AVAILABLE_BOUND:
-            w += NOT_AVAILABLE_TIME + END_CALL_TIME
+            w += NOT_AVAILABLE_TIME
             completedAttempts += 1
         else:  # this is the AVAILABLE case
             x = getRandNum(x)
             u = toDecimal(x)
             timeToAnswer = inverseCDF(u)
             if timeToAnswer < 25:
-                w += timeToAnswer + END_CALL_TIME
+                w += timeToAnswer
                 callAnswered = True
             else:
-                w += 25 + END_CALL_TIME
+                w += 25
                 completedAttempts += 1
+        w += END_CALL_TIME
     return w
 
 
@@ -94,15 +95,16 @@ def generateEstimates(sample):
         estimates[f"P[W<={cutoff}]"] = probability
     
     # Probabilities of events P[W <= eventCutoff]
-    w5 = 50
-    w6 = 60
-    w7 = 65
+    w5 = 60
+    w6 = 80
+    w7 = 110
     cutoffsFourtoSeven = [40, w5, w6, w7]
     for cutoff in cutoffsFourtoSeven:
-        frequency = len([x for x in sample if x >cutoff])
+        frequency = len([x for x in sample if x > cutoff])
         probability = frequency / 1000
         estimates[f"P[W>{cutoff}]"] = probability
     
+    estimates["range"] = f"{min(sample)}:{max(sample)}"
 
     return estimates
 
@@ -118,6 +120,7 @@ def generateGraph(sample):
     CDF(sample)
     return
 
+
 def histogram(sample):
     plt.figure()  # Create a new figure
     w = np.array(sample)
@@ -125,6 +128,7 @@ def histogram(sample):
     plt.show(block=False)
 
     return
+
 
 def boxPlot(sample):
     plt.figure()  # Create a new figure
@@ -134,27 +138,32 @@ def boxPlot(sample):
 
     return
 
-def CDF(sample):
+
+def CDF(sample):    
     plt.figure()  # Create a new figure
-     # Step 1: Sort the data
+    # Sort the data
     x = np.sort(sample)
     
-    # Step 2: Calculate the cumulative frequency
+    # Calculate the cumulative frequency
     n = x.size
-    y = np.arange(1, n+1) / n  # This gives the fraction or percent of data points below each value in x
+    y = np.arange(1, n+1) / n
 
-    # Step 3: Plot the sorted values against their corresponding cumulative frequencies
+    # Plot the sorted values against their corresponding cumulative frequencies
     plt.plot(x, y, linewidth=2)
 
     # Manually created, rough-estimate line of best-fit
-    x_func = np.linspace(7, 130, 500)
+    x_func = np.linspace(7, 128, 500)
     y_func = 1- np.e**(-0.0275*(x_func - 7))
     plt.plot(x_func, y_func, color='red', linewidth=2)
+
+    special_x = [15,20,30,40,60,80,110]
+    special_y = [np.sum(np.array(sample) < x)/1000 for x in special_x]
+    plt.scatter(special_x, special_y, marker='^', label='Triangle markers')
+    
     plt.grid(True)
     plt.show()
 
     return
-
 
 
 def main():
