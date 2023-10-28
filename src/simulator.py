@@ -152,6 +152,7 @@ def CDF(sample):
     y_func = 1- np.e**(-0.0275*(x_func - 7))
     plt.plot(x_func, y_func, color='red', linewidth=2)
 
+    # Markers for values W values (given and chosen)
     special_x = [15,20,30,40,60,80,110]
     special_y = [np.sum(np.array(sample) < x)/1000 for x in special_x]
     plt.scatter(special_x, special_y, marker='^', label='Triangle markers')
@@ -164,7 +165,7 @@ def CDF(sample):
     plt.title("Cumulative Distribution Function of Time Spent Calling One Customer")
 
     # Adds legend to graph
-    blue_data = mpatches.Patch(color='blue', label='Sample Cumulative Probability')
+    blue_data = mpatches.Patch(color='blue', label='Sample Cumulative Probability with \ntriangular markers for W values from estimates')
     red_data = mpatches.Patch(color='red', label='Example Exponential CDF')
     plt.legend(handles=[blue_data, red_data])
 
