@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 
 # Call Action Times
 INITIATE_CALL_TIME = 6
@@ -116,7 +117,6 @@ def printDict(dict):
 
 def generateGraph(sample):
     histogram(sample)
-    boxPlot(sample)
     CDF(sample)
     return
 
@@ -125,15 +125,11 @@ def histogram(sample):
     plt.figure()  # Create a new figure
     w = np.array(sample)
     plt.hist(w)
-    plt.show(block=False)
 
-    return
+    plt.ylabel("Frequency")
+    plt.xlabel("Time (seconds)")
+    plt.title("Time spent calling one customer")
 
-
-def boxPlot(sample):
-    plt.figure()  # Create a new figure
-    box_plot_data = [sample]
-    plt.boxplot(box_plot_data, patch_artist=True)
     plt.show(block=False)
 
     return
@@ -161,6 +157,17 @@ def CDF(sample):
     plt.scatter(special_x, special_y, marker='^', label='Triangle markers')
     
     plt.grid(True)
+
+    # Graph titles
+    plt.xlabel("Time spent calling one customer (seconds)")
+    plt.ylabel("Cumulative Probability")
+    plt.title("Cumulative Distribution Function of Time Spent Calling One Customer")
+
+    # Adds legend to graph
+    blue_data = mpatches.Patch(color='blue', label='Sample Cumulative Probability')
+    red_data = mpatches.Patch(color='red', label='Example Exponential CDF')
+    plt.legend(handles=[blue_data, red_data])
+
     plt.show()
 
     return
