@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+from numpy import asarray
+from numpy import savetxt
 
 # Call Action Times
 INITIATE_CALL_TIME = 6
@@ -176,6 +178,8 @@ def CDF(sample):
 
 def main():
     sample = generateSample(1000)
+    data = asarray(sample)
+    savetxt('sample.csv', data, delimiter=",")
     print(sample[0:9])  # check first 10 entries just in case!
     printDict(generateEstimates(sample))
     generateGraph(sample)
