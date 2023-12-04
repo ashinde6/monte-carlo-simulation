@@ -23,6 +23,10 @@ NOT_AVAILABLE_BOUND = BUSY_BOUND + 0.3
 # Global Tracker for Previous x (randomly generated number)
 x = SEED
 
+# Global Tracker for number of times toDecimal has been run
+TOTAL_DECIMALS_GENERATED = 0
+SPECIAL_U = []
+
 def generateW():
     w = 0  # w is the total time spent calling
     completedAttempts = 0
@@ -58,10 +62,13 @@ def getRandNum(previous_random_number):
 
 def toDecimal(random_number):
     decimal = round(random_number / MODULUS, 4)
-    # if decimal >= 1:
-    #     raise Exception("Decimal representation of the given random number %f is greater than or equal to 1", decimal)
-    # elif decimal < 0:
-    #     raise Exception("Decimal representation of the given random number %f is less than 0", decimal)
+
+    global TOTAL_DECIMALS_GENERATED
+    global SPECIAL_U
+    TOTAL_DECIMALS_GENERATED += 1
+    if TOTAL_DECIMALS_GENERATED in (51,52,53):
+        SPECIAL_U.append(decimal)
+    
     return round(random_number / MODULUS, 4)
 
 
@@ -183,6 +190,7 @@ def main():
     print(sample[0:9])  # check first 10 entries just in case!
     printDict(generateEstimates(sample))
     generateGraph(sample)
+    print(SPECIAL_U)
     return
 
 
